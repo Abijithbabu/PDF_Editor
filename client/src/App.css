@@ -1,42 +1,59 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.app {
+  font-family: sans-serif;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+h4 {
+  text-align: left;
+  margin-left: 40px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+hr {
+  border-top: 2px dotted #3f51b5;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+button {
+  margin-right: 10px;
+  background: #3f51b5;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  width: 100px;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px 1px #ccc;
 }
 
-.card {
-  padding: 2em;
+/* For pdf */
+.react-pdf__Page {
+  margin-top: 10px;
 }
 
-.read-the-docs {
-  color: #888;
+.pdf-preview-page {
+  cursor: pointer;
+}
+.pdf-preview-selected {
+  padding-bottom: 10px;
+  border: 3px solid rgb(58, 144, 190);
+  border-radius: 2px;
+}
+
+.react-pdf__Page__textContent {
+  /* border: 1px solid darkgrey; */
+  /* box-shadow: 5px 5px 5px 1px #ccc; */
+  border-radius: 5px;
+}
+
+.react-pdf__Page__annotations.annotationLayer {
+  padding: 20px;
+}
+
+.react-pdf__Page__canvas {
+  /* margin: 0 auto; */
+}
+
+/* For all pages */
+.all-page-container {
+  height: 100%;
+  max-height: 500px;
+  overflow: auto;
 }

@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.15",
     "file-saver": "^2.0.5",
     "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
