@@ -1,0 +1,32 @@
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const authRoutes = require("./routes/auth");
+const pdfRoutes = require("./routes/pdf");
+const app = express();
+require("dotenv").config();
+
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  credentials: true,
+}));
+app.use(express.json());
+app.use(express.static('public'))
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("DB Connetion Successfull");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/pdf", pdfRoutes);
+
+app.listen(process.env.PORT, () =>
+  console.log(`Server started on ${process.env.PORT}`)
+);
