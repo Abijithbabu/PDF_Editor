@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import PDFPreview from './PdfPreview';
+import PDFPreview from './PdfPreview.jsx';
 import { Grid } from '@mui/material'
 
 function PDFViewer() {
