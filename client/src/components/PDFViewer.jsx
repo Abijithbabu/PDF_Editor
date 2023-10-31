@@ -24,11 +24,17 @@ function PDFViewer() {
   return (
     <div className="app">
       {!uploadedFile && <input type="file" accept=".pdf" style={{ cursor: 'pointer', zIndex: 100, padding: 50 }} onChange={(e) => handleFileChange(e.target.files[0])}/>}
-      <Grid container spacing={2} padding={6}> 
-        <Grid item lg={6}>
+      <Grid container spacing={1} > 
+        <Grid item lg={6.2} >
           {pages && <PDFPreview file={uploadedFile} selected={selected} handleSelection={setSelected} Pages={pages} />}
         </Grid>
-        <Grid item lg={6}>
+        <Grid item lg={5.8} sx={{
+          overflowX: 'hidden',
+          overflowY: 'auto', 
+          whiteSpace: 'wrap', 
+          maxHeight: '96vh',
+          mt:'20px' ,  
+        }}>
           {uploadedFile && (
             <Document file={uploadedFile} onLoadSuccess={onDocumentLoadSuccess}>
               <Page pageNumber={selected} />
