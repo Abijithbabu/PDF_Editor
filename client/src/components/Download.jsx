@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme } from '@mui/material';
-import { CheckCircleIcon, Home, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
+import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { CheckCircle, Home, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
 import { status } from '../utils/constants';
 
 const PdfExtractionComponent = ({ file, pages }) => {
@@ -68,49 +62,47 @@ const PdfExtractionComponent = ({ file, pages }) => {
             Generate PDF
           </DialogTitle>
           <DialogContent>
-            <DialogContentText flexDirection={'row'}>
-              <TextField
-                variant="standard"
-                id="standard-basic"
-                label="Filename"
-                value={filename}
-                onChange={e => setFilename(e.target.value)}
-                fullWidth
-                sx={{ minWidth: '35vw', pb: '10px' }}
-                helperText="extension (.pdf) is not required"
-              />
-              {!!progress &&
-                <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row" alignItems={'center'}>
-                  {progress == 100 && data ? data?.status ?
-                    <CheckCircleIcon color='success' />
-                    :
-                    <Error color='error' />
-                    :
-                    <CircularProgress color={status[progress]?.color} />
-                  }
-                  <Typography fontSize={'small'}>
-                    {progress === 100 && data ? data.message : status[progress]?.title}
-                  </Typography>
-                </Stack>}
-              <Stack pt={3}>
-                {progress == 100 && data ?
-                  <>
-                    {data?.link &&
-                      <a href={data.link} download target="_blank">
-                        <Button variant='outlined' >
-                          <FileDownload />&nbsp;&nbsp;Download
-                        </Button>
-                      </a>
-                    }
-                    <Link fontSize={'small'} onClick={extractPagesAndDownload}>regenerate</Link>
-                  </>
+            <TextField
+              variant="standard"
+              id="standard-basic"
+              label="Filename"
+              value={filename}
+              onChange={e => setFilename(e.target.value)}
+              fullWidth
+              sx={{ minWidth: '35vw', pb: '10px' }}
+              helperText="extension (.pdf) is not required"
+            />
+            {!!progress &&
+              <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row" alignItems={'center'}>
+                {progress == 100 && data ? data?.status ?
+                  <CheckCircle color='success' />
                   :
-                  <Button variant='outlined' disabled={!!progress} onClick={extractPagesAndDownload}>
-                    <CreateNewFolder />&nbsp;&nbsp;create pdf
-                  </Button>
+                  <Error color='error' />
+                  :
+                  <CircularProgress color={status[progress]?.color} />
                 }
-              </Stack>
-            </DialogContentText>
+                <Typography fontSize={'small'}>
+                  {progress === 100 && data ? data.message : status[progress]?.title}
+                </Typography>
+              </Stack>}
+            <Stack pt={3}>
+              {progress == 100 && data ?
+                <>
+                  {data?.link &&
+                    <a href={data.link} download target="_blank">
+                      <Button variant='outlined' >
+                        <FileDownload />&nbsp;&nbsp;Download
+                      </Button>
+                    </a>
+                  }
+                  <Link fontSize={'small'} onClick={extractPagesAndDownload}>regenerate</Link>
+                </>
+                :
+                <Button variant='outlined' disabled={!!progress} onClick={extractPagesAndDownload}>
+                  <CreateNewFolder />&nbsp;&nbsp;create pdf
+                </Button>
+              }
+            </Stack>
           </DialogContent>
           <DialogActions>
             <IconButton onClick={() => setOpen(false)} >

@@ -14,11 +14,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "^5.14.15",
-    "@react-pdf/renderer": "^3.1.14",
     "axios": "^1.6.0",
-    "file-saver": "^2.0.5",
     "framer-motion": "^10.16.4",
-    "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-pdf": "^7.5.1"
