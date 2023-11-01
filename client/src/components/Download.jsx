@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -6,13 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Backdrop, ButtonGroup, CircularProgress, IconButton, InputAdornment, Link, Stack, TextField, ThemeProvider, Typography, createTheme } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import Home from '@mui/icons-material/Home';
-import Cancel from '@mui/icons-material/Cancel';
-import Error from '@mui/icons-material/Error';
-import CreateNewFolder from '@mui/icons-material/CreateNewFolder';
-import FileDownload from '@mui/icons-material/FileDownload';
+import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { CheckCircleIcon, Home, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
 import { status } from '../utils/constants';
 
 const PdfExtractionComponent = ({ file, pages }) => {
@@ -30,7 +25,6 @@ const PdfExtractionComponent = ({ file, pages }) => {
     formData.append('filename', filename)
     formData.append('pages', JSON.stringify(order))
     const res = await axios.post('http://localhost:5000/api/pdf/createPdf', formData)
-    console.log(res.data)
     setData(res.data)
   }
 
@@ -56,7 +50,7 @@ const PdfExtractionComponent = ({ file, pages }) => {
 
   return (
     <div>
-      <button onClick={() => setOpen(true)} style={{width:'150px'}}>
+      <button onClick={() => setOpen(true)} style={{ width: '150px' }}>
         Extract and Download PDF
       </button>
       <ThemeProvider theme={defaultTheme}>
@@ -102,11 +96,12 @@ const PdfExtractionComponent = ({ file, pages }) => {
                 {progress == 100 && data ?
                   <>
                     {data?.link &&
-                      <Button variant='outlined' >
-                        <a href={'maku2.pdf'} download target="_blank">
+                      <a href={data.link} download target="_blank">
+                        <Button variant='outlined' >
                           <FileDownload />&nbsp;&nbsp;Download
-                        </a>
-                      </Button>}
+                        </Button>
+                      </a>
+                    }
                     <Link fontSize={'small'} onClick={extractPagesAndDownload}>regenerate</Link>
                   </>
                   :
