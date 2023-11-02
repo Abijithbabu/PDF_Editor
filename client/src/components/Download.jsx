@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { CheckCircle, Home, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
 import { status } from '../utils/constants';
+import { EditPDF } from '../utils/api';
 
 const PdfExtractionComponent = ({ file, pages }) => {
 
@@ -14,11 +15,7 @@ const PdfExtractionComponent = ({ file, pages }) => {
   const extractPagesAndDownload = async () => {
     counter()
     const order = pages.map(x => Number(x.key))
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('filename', filename)
-    formData.append('pages', JSON.stringify(order))
-    const res = await axios.post('http://localhost:5000/api/pdf/createPdf', formData)
+    const res = await EditPDF({ file, filename, order })
     setData(res.data)
   }
 
@@ -89,11 +86,11 @@ const PdfExtractionComponent = ({ file, pages }) => {
               {progress == 100 && data ?
                 <>
                   {data?.link &&
-                    <a href={data.link} download target="_blank">
-                      <Button variant='outlined' >
+                    <Button variant='outlined' >
+                      <a href={data.link} download target="_blank">
                         <FileDownload />&nbsp;&nbsp;Download
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   }
                   <Link fontSize={'small'} onClick={extractPagesAndDownload}>regenerate</Link>
                 </>
