@@ -18,6 +18,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { items } from './NavItems';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Login, Logout } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -91,6 +93,7 @@ export default function SideNav({children}) {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate()
   const pathname = useLocation().pathname
+  const auth = useSelector(store=>store?.user)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -131,7 +134,6 @@ export default function SideNav({children}) {
         <Divider />
         <List>
           {items.map((item, index) => (
-            <>
             <ListItem key={index} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -154,9 +156,32 @@ export default function SideNav({children}) {
                 <ListItemText primary={item.title} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            {items.length-2 === index && <Divider sx={{pt:3}} />}
-            </>
           ))}
+        </List>
+        <Divider sx={{pt:1}} />
+        <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+                onClick={()=>navigate(auth?'/logout':'/login')}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    color:pathname === '/login' ? 'rgb(58, 144, 190)' : 'white'
+                  }}
+                >
+                 {auth ? <Logout/> : <Login/>}
+                </ListItemIcon>
+                <ListItemText primary={auth ? 'Logout' : 'Login'} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

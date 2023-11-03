@@ -1,4 +1,4 @@
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import Router from "./routes/Router";
 import { pdfjs } from 'react-pdf';
 import './App.css'
@@ -26,9 +26,9 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <HashRouter>
         <Router />
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>  
     </>
   );

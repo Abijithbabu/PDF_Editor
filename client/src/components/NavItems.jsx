@@ -1,5 +1,5 @@
 
-import { AddToDrive, BorderStyle, Dashboard, Logout, PictureAsPdf } from "@mui/icons-material";
+import { AddToDrive, BorderStyle, Dashboard, PictureAsPdf } from "@mui/icons-material";
 
 export const items = [
   {
@@ -22,9 +22,4 @@ export const items = [
     path: '/drive',
     icon: <AddToDrive/>
   },
-  {
-    title: 'Logout',
-    path: '/logout',
-    icon: <Logout/>
-  }
 ];

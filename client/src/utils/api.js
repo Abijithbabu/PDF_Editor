@@ -4,6 +4,8 @@ export const login = async (data) => await axios.post('/auth/login', data)
 
 export const Register = async (data) => await axios.post('/auth/register', data)
 
+export const gLogin = async (data) => await axios.post(`/auth/glogin`, data)
+
 export const EditPDF = async (data) => {
     const { filename, file, order } = data
     const formData = new FormData()
