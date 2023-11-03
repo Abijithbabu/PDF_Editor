@@ -4,6 +4,7 @@ import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css'; // Import the Dropzone CSS
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Alert, Typography } from '@mui/material';
 
 const PDFInput = () => {
 let myDropzone;
@@ -21,7 +22,7 @@ myDropzone = new Dropzone('#my-dropzone', {
     done('Folder uploads are not allowed. Please select individual files.');
    } else {
     dispatch({ type: "dispatch_data", payload: file })
-    navigate('/EditPDF')
+    navigate('/editor')
     done();
    }
  },
@@ -40,7 +41,11 @@ return () => {
 
 return (
  <div>
-  <form className="dropzone" id="my-dropzone"></form>
+    <Alert severity="info"><Typography variant='caption'>
+        Click here to select files or Drag files to start editing 
+    </Typography> </Alert>
+  <form className="dropzone" id="my-dropzone">
+  </form>
  </div>
 );
 };

@@ -1,7 +1,13 @@
-.app {
-  font-family: sans-serif;
-  text-align: center;
-  width: 100vw;
+
+body::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #d9d1d139;
+  width: 0.6rem;
+  border-radius: 0.5rem;
 }
 
 h4 {
@@ -13,7 +19,11 @@ hr {
   border-top: 2px dotted #3f51b5;
 }
 
-
+.dropzone {
+  background-color: #1C1C24;
+  border: 2px dashed rgb(90, 92, 93);
+  border-radius: 2px;
+}
 
 /* For pdf */
 /* .react-pdf__Page {

@@ -86,10 +86,8 @@ const PdfExtractionComponent = ({ file, pages }) => {
               {progress == 100 && data ?
                 <>
                   {data?.link &&
-                    <Button variant='outlined' >
-                      <a href={data.link} download target="_blank">
-                        <FileDownload />&nbsp;&nbsp;Download
-                      </a>
+                    <Button variant='outlined' component={Link} href={data.link} target="_blank">
+                      <FileDownload />&nbsp;&nbsp;Download
                     </Button>
                   }
                   <Link fontSize={'small'} onClick={extractPagesAndDownload}>regenerate</Link>

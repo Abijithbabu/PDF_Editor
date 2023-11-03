@@ -9,7 +9,7 @@ export const items = [
   },
   {
     title: 'Editor',
-    path: '/EditPDF',
+    path: '/editor',
     icon: <BorderStyle/>
   },
   {

@@ -146,7 +146,7 @@ export default function SideNav({children}) {
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color:item.path === pathname ? 'blue' : 'white'
+                    color:item.path === pathname ? 'rgb(58, 144, 190)' : 'white'
                   }}
                 >
                   {item.icon}
