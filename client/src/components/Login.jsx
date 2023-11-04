@@ -1,4 +1,3 @@
-import { useCallback, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -14,12 +13,13 @@ import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { useEffect } from "react";
 import { Close } from "@mui/icons-material";
+import { gLogin, login } from "../utils/api";
+import notify from "../utils/notification";
 
 const Page = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const GOOGLE_CLIENT_ID =
-    "935019407967-lo70id2odmnnahp9a7md43d077669inu.apps.googleusercontent.com";
+  const GOOGLE_CLIENT_ID ="935019407967-lo70id2odmnnahp9a7md43d077669inu.apps.googleusercontent.com";
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -35,12 +35,15 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        const auth = await Login(values);
-        auth &&
-          dispatch({ type: "user_login", payload: auth }).then(navigate("/"));
-      } catch (err) {
+        const auth = await login(values);
+        if(auth.data.status){
+            console.log(auth)
+            dispatch({ type: "login", payload: auth.data.user })
+            navigate("/")
+        }
+      } catch (error) {
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
+        helpers.setErrors({ submit: error?.response?.data?.message || error.message });
         helpers.setSubmitting(false);
       }
     },
@@ -54,14 +57,13 @@ const Page = () => {
     }
     gapi.load("client:auth2", start);
   });
-
   const ResponseGoogle = async (res) => {
     if (res.error) {
-      console.log("Authentication failed:");
+      notify({ message: "Authentication failed", title: 'Error !', type: 'danger' });
     } else {
       const auth = await gLogin(res.profileObj);
-      if (auth) {
-        dispatch({ type: "user_login", payload: auth });
+      if (auth.data.status) {
+        dispatch({ type: "login", payload: auth.data.user });
         navigate("/");
       }
     }

@@ -10,19 +10,17 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { items } from './NavItems';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Login, Logout } from '@mui/icons-material';
+import { Login, Logout, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import AlertDialog from './Logout';
 
 const drawerWidth = 240;
-
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -91,6 +89,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function SideNav({children}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [ showAlert, setShow ] = React.useState(false)
   const navigate = useNavigate()
   const pathname = useLocation().pathname
   const auth = useSelector(store=>store?.user)
@@ -128,7 +127,7 @@ export default function SideNav({children}) {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -167,14 +166,14 @@ export default function SideNav({children}) {
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
-                onClick={()=>navigate(auth?'/logout':'/login')}
-              >
+                onClick={()=>auth?setShow(true):navigate('/login')}
+                >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color:pathname === '/login' ? 'rgb(58, 144, 190)' : 'white'
+                    color:['/login','/register'].includes(pathname) ? 'rgb(58, 144, 190)' : 'white'
                   }}
                 >
                  {auth ? <Logout/> : <Login/>}
@@ -184,6 +183,7 @@ export default function SideNav({children}) {
             </ListItem>
         </List>
       </Drawer>
+      <AlertDialog open={showAlert} setOpen={setShow}/>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         { children }

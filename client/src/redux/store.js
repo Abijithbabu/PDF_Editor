@@ -26,7 +26,7 @@ import { Reducer } from "./reducer";
   
   export const store = createStore(
     Reducer,
-    // persistedState,
+    persistedState,
     composeEnhancers(applyMiddleware(thunk))
   );
   

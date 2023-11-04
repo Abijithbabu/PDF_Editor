@@ -5,6 +5,8 @@ import './App.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { ThemeProvider, createTheme } from "@mui/material";
+import { ReactNotifications } from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
@@ -26,6 +28,7 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
+    <ReactNotifications />
       <HashRouter>
         <Router />
       </HashRouter>

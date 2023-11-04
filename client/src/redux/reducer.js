@@ -8,7 +8,7 @@ export function Reducer(state = initialState, { type, payload }) {
   switch (type) {
     case 'login':
       return {
-        user:payload.user,
+        user:payload,
         data:[]
       };
       case 'dispatch_data':
