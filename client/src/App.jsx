@@ -7,6 +7,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import { ThemeProvider, createTheme } from "@mui/material";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
+import Layout from './components/Layout'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
@@ -27,12 +28,14 @@ function App() {
   });
   return (
     <>
-    <ThemeProvider theme={theme}>
-    <ReactNotifications />
-      <HashRouter>
-        <Router />
-      </HashRouter>
-    </ThemeProvider>  
+      <ThemeProvider theme={theme}>
+        <ReactNotifications />
+        <HashRouter>
+          <Layout>
+            <Router />
+          </Layout>
+        </HashRouter>
+      </ThemeProvider>
     </>
   );
 }

@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import Info from './Info';
 
 export default function Files() {
-    const auth = useSelector(store=>store?.user)
+    const [data, setData] = React.useState([])
   return (
     <>
-   { auth ? 
+   { data && data?.length ? 
    <>
      <Toolbar
       sx={{
@@ -28,11 +28,7 @@ export default function Files() {
 
     </> :
     <>
-    <Info
-      title='Want to see Saved Files ?'
-      body = 'Login to your account to view complete activity'
-      text = 'Get Started'
-    />
+    <Info/>
     </>
     }
     </>

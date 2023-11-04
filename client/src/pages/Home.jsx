@@ -1,6 +1,5 @@
 import React from 'react'
 import PDFInput from '../components/PDFInput'
-import Layout from '../components/Layout'
 import Recent from '../components/Recent'
 import { ThemeProvider, createTheme } from '@mui/material';
 
@@ -19,10 +18,10 @@ const Home = () => {
  return (
     // <ThemeProvider theme={theme}>
 
-  <Layout>
+  <>
     <PDFInput />
     <Recent/>
-  </Layout>
+  </>
 //   </ThemeProvider>
  )
 }

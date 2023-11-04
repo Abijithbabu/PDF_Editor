@@ -48,7 +48,11 @@ function PDFViewer() {
             </Grid>
           </Grid>
         </> :
-        <Info />
+        <Info
+          title='Oops, Nothing Here !'
+          body='Insert a new file or choose from existing files to start Editor'
+          text='choose file'
+        />
       }
     </div>
   );

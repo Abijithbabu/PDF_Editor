@@ -22,6 +22,7 @@
     "gapi-script": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-drive-picker": "^1.2.2",
     "react-google-login": "^5.2.2",
     "react-notifications-component": "^4.0.1",
     "react-pdf": "^7.5.1",

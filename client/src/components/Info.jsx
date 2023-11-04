@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 
 const Info = (props) => {
 const {
-    title = 'Oops, Nothing Here !',
-    body = 'Insert a new file or choose from existing files to start Editor',
-    text = 'choose file',
+    title='Not Enough Data !!',
+    body ='Edit your first PDF to display this page',
+    text ='Get Started',
     url = '/'
 } = props
 return (

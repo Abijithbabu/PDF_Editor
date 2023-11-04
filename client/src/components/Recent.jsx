@@ -16,6 +16,8 @@ const rows = [
 
 export default function BasicTable() {
     const auth = useSelector(store=>store?.user)
+    const [data, setData] = React.useState([])
+
   return (
     <>
      <Toolbar
@@ -33,7 +35,8 @@ export default function BasicTable() {
           Recent Files
         </Typography>
     </Toolbar>
-   { auth ? <TableContainer component={Paper}>
+   { auth ?  data && data?.length ?
+   <TableContainer component={Paper}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -60,10 +63,12 @@ export default function BasicTable() {
         </TableBody>
       </Table>
     </TableContainer> :
+     <Info/>
+     :
     <Info
       title='Want to see your history ?'
       body = 'Login to your account to view complete history'
-      text = 'Get Started'
+      url = '/login'
     />
     }
     </>
