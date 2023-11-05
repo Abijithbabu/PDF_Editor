@@ -20,6 +20,7 @@ Axios.interceptors.request.use(function (config) {
 Axios.interceptors.response.use(function (response) {
   const message = response?.data?.message
   console.warn(message)
+  if(message)
   notify({ message: message })
   return response;
 }, function (error) {

@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { CheckCircle, Home, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
 import { status } from '../utils/constants';
 import { EditPDF } from '../utils/api';
+import { useSelector } from 'react-redux';
+import { validateName } from '../utils/functions';
 
 const PdfExtractionComponent = ({ file, pages }) => {
 
   const [open, setOpen] = React.useState(false);
   const [data, setData] = useState(null)
+  const [error, setError] = useState({status:false,message:'filename extension (.pdf) is required'})
   const [filename, setFilename] = useState('')
   const [progress, setProgress] = React.useState(0);
-
+  const user = useSelector(store=>store?.user)
   const extractPagesAndDownload = async () => {
-    counter()
-    const order = pages.map(x => Number(x.key))
-    const res = await EditPDF({ file, filename, order })
-    setData(res.data)
+    if(!error.status){
+      counter()
+     const order = pages.map(x => Number(x.key))
+     const res = await EditPDF({ file, filename, order, id:user._id })
+     setData(res.data)
   }
+  }
+useEffect(() => {
+setError(validateName(filename, user?.files))
+}, [filename])
 
   const counter = () => {
     setProgress(0)
@@ -64,10 +72,11 @@ const PdfExtractionComponent = ({ file, pages }) => {
               id="standard-basic"
               label="Filename"
               value={filename}
+              error={error.status}
               onChange={e => setFilename(e.target.value)}
               fullWidth
               sx={{ minWidth: '35vw', pb: '10px' }}
-              helperText="extension (.pdf) is not required"
+              helperText={error.message}
             />
             {!!progress &&
               <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row" alignItems={'center'}>
@@ -104,7 +113,7 @@ const PdfExtractionComponent = ({ file, pages }) => {
               <Home />
               <Typography fontSize={'small'}>Home</Typography>
             </IconButton>
-            <IconButton onClick={() => setOpen(false)}>
+            <IconButton onClick={() => setProgress(0)}>
               <Cancel />
               <Typography fontSize={'small'}>Cancel</Typography>
             </IconButton>
