@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'
-import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { CheckCircle, Home, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
+import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemeProvider, Typography, createTheme, Button, Dialog, DialogActions, DialogContent, DialogTitle, Box } from '@mui/material';
+import { CheckCircle, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
 import { status } from '../utils/constants';
 import { EditPDF } from '../utils/api';
-import { useSelector } from 'react-redux';
 import { validateName } from '../utils/functions';
 
 const PdfExtractionComponent = ({ file, pages }) => {
@@ -14,17 +12,16 @@ const PdfExtractionComponent = ({ file, pages }) => {
   const [error, setError] = useState({status:false,message:'filename extension (.pdf) is required'})
   const [filename, setFilename] = useState('')
   const [progress, setProgress] = React.useState(0);
-  const user = useSelector(store=>store?.user)
   const extractPagesAndDownload = async () => {
     if(!error.status){
       counter()
      const order = pages.map(x => Number(x.key))
-     const res = await EditPDF({ file, filename, order, id:user._id })
+     const res = await EditPDF({ file, filename, order })
      setData(res.data)
   }
   }
 useEffect(() => {
-setError(validateName(filename, user?.files))
+setError(validateName(filename))
 }, [filename])
 
   const counter = () => {
@@ -49,9 +46,9 @@ setError(validateName(filename, user?.files))
 
   return (
     <div>
-      <button onClick={() => setOpen(true)} style={{ width: '150px' }}>
-        Extract and Download PDF
-      </button>
+      <Box style={{ position: 'absolute', bottom: '20px', right: '20px', zIndex: 10 }}>
+        <Button variant='contained' onClick={() => setOpen(true)}>Export</Button>
+      </Box>
       <ThemeProvider theme={defaultTheme}>
         <Dialog
           open={open}
@@ -95,7 +92,7 @@ setError(validateName(filename, user?.files))
               {progress == 100 && data ?
                 <>
                   {data?.link &&
-                    <Button variant='outlined' component={Link} href={data.link} target="_blank">
+                    <Button variant='outlined' component={Link} href={import.meta.env.VITE_SERVER_URL+data.link} target="_blank">
                       <FileDownload />&nbsp;&nbsp;Download
                     </Button>
                   }
@@ -109,10 +106,6 @@ setError(validateName(filename, user?.files))
             </Stack>
           </DialogContent>
           <DialogActions>
-            <IconButton onClick={() => setOpen(false)} >
-              <Home />
-              <Typography fontSize={'small'}>Home</Typography>
-            </IconButton>
             <IconButton onClick={() => setProgress(0)}>
               <Cancel />
               <Typography fontSize={'small'}>Cancel</Typography>

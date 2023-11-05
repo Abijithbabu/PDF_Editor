@@ -6,11 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
+import { logout } from '../utils/api';
 
 export default function AlertDialog({open,setOpen}) {
 const dispatch = useDispatch()
-const logout = ()=>{
-    dispatch({type:"logout"})
+const handleLogout = async ()=>{
+    const res = await logout()
+    if(res)dispatch({type:"logout"})
     setOpen(false)
 }
   return (
@@ -32,7 +34,7 @@ const logout = ()=>{
         </DialogContent>
         <DialogActions>
           <Button onClick={()=>setOpen(false)}>Return</Button>
-          <Button onClick={logout} autoFocus>
+          <Button onClick={handleLogout} autoFocus>
             Confirm
           </Button>
         </DialogActions>

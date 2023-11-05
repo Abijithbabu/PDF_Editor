@@ -31,8 +31,7 @@ export function timeAgo(dateString) {
 }
 
 
-export function validateName(filename, existingFiles) {
-  console.log(filename, existingFiles)
+export function validateName(filename) {
   let message = ''
   let status = false
   const regex = new RegExp("^[^+]+\\.pdf$");

@@ -1,9 +1,13 @@
-import  { useEffect } from 'react';
+import * as React from 'react';
 import useDrivePicker from 'react-google-drive-picker'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 function App() {
-  const [openPicker, authResponse] = useDrivePicker();  
+  const [openPicker, authResponse] = useDrivePicker();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   // const customViewsArray = [new google.picker.DocsView()]; // custom view
   const handleOpenPicker = () => {
     openPicker({
@@ -14,25 +18,21 @@ function App() {
       showUploadView: true,
       showUploadFolders: true,
       supportDrives: true,
-      multiselect: true,
       // customViews: customViewsArray, // custom view
+      accept: ['application/pdf'],
       callbackFunction: (data) => {
-        if (data.action === 'cancel') {
-          console.log('User clicked cancel/close button')
-        }
-        console.log(data)
+          const selectedFiles = data.docs || [];
+          dispatch({ type: "dispatch_data", payload: selectedFiles })
+          navigate('/editor')
       },
     })
   }
 
-useEffect(() => {
-    console.log(window.location.protocol + '//' + window.location.host)
-    handleOpenPicker()
-}, [])
-  
   return (
     <>
-
+      <div>
+        <button onClick={() => handleOpenPicker()}>Select Files from Drive</button>
+      </div>
     </>
   );
 }

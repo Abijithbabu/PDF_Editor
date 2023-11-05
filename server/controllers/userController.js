@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -11,7 +12,20 @@ module.exports.login = async (req, res, next) => {
     if (!isPasswordValid)
       return res.status(400).json({ message: "Incorrect Username or Password", status: false });
     delete user.password;
-    return res.json({ status: true, user });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: 860000,
+    });
+  
+    return res
+    .cookie("token", token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 60 * 60),
+      httpOnly: true,
+      SameSite: "lax",
+      // secure: true,
+    })
+    .status(200)
+    .json({ status: true, user });
   } catch (ex) {
     next(ex);
   }
@@ -33,7 +47,19 @@ module.exports.register = async (req, res, next) => {
       password: hashedPassword,
     });
     delete user.password;
-    return res.json({ status: true, user });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: 860000,
+    });
+  
+  return res
+    .status(200)
+    .cookie("token", token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 60 * 60),
+      httpOnly: true,
+      SameSite: "None",
+      secure: true,
+    }).json({ status: true, user });
   } catch (ex) {
     next(ex);
   }
@@ -41,7 +67,6 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.gLogin = async (req, res) => {
   const { name, email, googleId, imageUrl } = req.body;
-  console.log(email, googleId);
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email })
@@ -62,13 +87,19 @@ module.exports.gLogin = async (req, res) => {
       });
       await existingUser.save();
     }
-    res
-      .status(200)
-      .json({
-        message: "Successfully Logged in",
-        user: existingUser,
-        status:true,
-      });
+    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {
+      expiresIn: 860000,
+    });
+
+  return res
+    .status(200)
+    .cookie("token", token, {
+      path: "/",
+      expires: new Date(Date.now() + 1000 * 60 * 60),
+      httpOnly: true,
+      SameSite: "None",
+      secure: true,
+    }).json({ status: true, user:existingUser });
   } catch (error) {
     console.log(error.message);
     return new Error(error);
@@ -77,7 +108,7 @@ module.exports.gLogin = async (req, res) => {
 
 module.exports.logOut = (req, res, next) => {
   try {
-    if (!req.params.id) return res.json({ message: "User id is required " });
+    res.clearCookie(`token`);
     return res.status(200).send();
   } catch (ex) {
     next(ex);

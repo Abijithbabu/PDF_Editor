@@ -3,13 +3,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import GoogleDrive from "../components/GoogleDrive";
 import Home from "../pages/Home";
 import Editor from "../pages/Editor";
-import { useSelector } from "react-redux";
 import Files from "../pages/Files";
 import Login from '../pages/Login'
 import ProtectedRoutes from './ProtectedRoutes'
+
 const Router = () => {
-  const auth = useSelector(store => store)
-  console.error(auth)
   return (
     <>
       <Routes>

@@ -6,10 +6,10 @@ const Users = require('../models/userModel')
 
 module.exports.createPdf = async (req, res, next) => {
   try {
-    const { filename, pages, file, userId } = req?.body
+    const { filename, pages, file } = req?.body
     const uploadedFile = req?.files?.file;
     let existingFile
-    const filePath = `${path.dirname(__dirname)}\\public\\pdfs\\${userId}\\${filename}`;
+    const filePath = `${path.dirname(__dirname)}\\public\\pdfs\\${req.id}\\${filename}`;
     const dirname = path.dirname(filePath);
 
     // create a new folder for user if he doesn't have an existing
@@ -25,14 +25,14 @@ module.exports.createPdf = async (req, res, next) => {
     } else {
       const url = new URL(file);
       const name = url.pathname.split('/').pop()
-      existingFile = `${path.dirname(__dirname)}\\public\\pdfs\\${userId}\\${name}`
+      existingFile = `${path.dirname(__dirname)}\\public\\pdfs\\${req.id}\\${name}`
     }
-    
+
     // Load the PDF from the temporary file
     const content = await PDFDocument.load(fs.readFileSync(existingFile));
     // Create a new document
     const doc = await PDFDocument.create();
-    
+
     // Add individual content pages
     const contentPages = await doc.copyPages(content, JSON.parse(pages));
     for (const page of contentPages) {
@@ -53,33 +53,45 @@ module.exports.createPdf = async (req, res, next) => {
     let existingFiles
     // save to database if document already existed else created a new collection 
     const saveFiles = async (size) => {
-      existingFiles = await Files.findOne({ author: userId, filename })
+      existingFiles = await Files.findOne({ author: req.id, filename })
       if (existingFiles) {
         existingFiles.size = size
         await existingFiles.save()
       } else {
         existingFiles = await Files.create({
           filename,
-          path: `${process.env.SERVER_URL}/pdfs/${userId}/${filename}`,
-          author: userId,
+          path: `/pdfs/${req.id}/${filename}`,
+          author: req.id,
           size
         })
       }
     }
 
-    return res.json({ status: true, message: 'done', link: `${process.env.SERVER_URL}/pdfs/${userId}/${filename}`, file: await doc.save() });
+    return res.status(200).json({ status: true, message: 'done', link: `/pdfs/${req.id}/${filename}` });
 
   } catch (ex) {
-    return res.json({ status: false, message: ex.message });
+    return res.status(400).json({ status: false, message: ex.message });
   }
 };
-    
-module.exports.fetchPdf = async (req, res, next) => {
-  try {
-    const data = await Files.find({author:req.query.id})
-    if(data)
-    return res.json({ status: true, data});
 
-  }catch (err){
-    return res.json({ status: false, message: err.message });
-  }}
+module.exports.fetchPdf = async (req, res) => {
+  try {
+    const data = await Files.find({ author: req.id })
+    if (data)
+      return res.status(200).json({ status: true, data });
+
+  } catch (err) {
+    return res.status(400).json({ status: false, message: err.message });
+  }
+}
+
+module.exports.fetchLastUpdated = async (req, res) => {
+  try {
+    const data = await Files.find({ author: req.id }).sort({updatedAt:-1}).limit(5)
+    if (data)
+      return res.status(200).json({ status: true, data });
+
+  } catch (err) {
+    return res.status(400).json({ status: false, message: err.message });
+  }
+}

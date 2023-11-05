@@ -1,10 +1,10 @@
 import React from 'react'
-import PDFViewer from '../components/PDFViewer'
+import Editor from '../components/Editor'
 
 const Edit = () => {
   return (
     <>
-      <PDFViewer/>
+      <Editor/>
     </>
   )
 }

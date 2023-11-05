@@ -10,6 +10,6 @@ const router = require("express").Router();
 router.post("/login", login);
 router.post("/gLogin", gLogin);
 router.post("/register", register);
-router.get("/logout/:id", logOut);
+router.patch("/logout", logOut);
 
 module.exports = router;

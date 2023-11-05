@@ -19,13 +19,12 @@ Axios.interceptors.request.use(function (config) {
 
 Axios.interceptors.response.use(function (response) {
   const message = response?.data?.message
-  console.warn(message)
+  console.info(message)
   if(message)
   notify({ message: message })
   return response;
 }, function (error) {
   const errorMessage = error?.response?.data?.message || error.message
-  console.error('Error ' + errorMessage)
-  notify({ message: errorMessage, title: 'Error !', type: 'danger' })
+  console.warn('Error ' + errorMessage)
   return Promise.reject(error);
 });

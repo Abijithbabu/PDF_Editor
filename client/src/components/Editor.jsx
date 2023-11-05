@@ -1,15 +1,17 @@
+import { Backdrop, Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import React, { useState } from 'react';
-import { Document, Page } from 'react-pdf';
-import PDFPreview from './PDFPreview.jsx';
-import { Backdrop, CircularProgress, Grid } from '@mui/material'
+import Workspace from './Workspace';
 import { useSelector } from 'react-redux';
-import Info from './Info.jsx';
+import Info from './Info';
+import { Document, Page } from 'react-pdf';
 
-function PDFViewer() {
+
+export default function Editor() {
   const uploadedFile = useSelector(store => store.selectedPDF)
   const [pages, setPages] = useState(null);
   const [selected, setSelected] = useState(1)
-
+  const theme = useTheme();
+  const md = useMediaQuery(theme.breakpoints.up('sm'));
   const generatePages = (numPages) => {
     return Array.from({ length: numPages }, (_, index) => (
       <Document file={uploadedFile} key={index}>
@@ -20,8 +22,9 @@ function PDFViewer() {
   const onDocumentLoadSuccess = ({ numPages }) => {
     setPages(generatePages(numPages));
   }
+
   return (
-    <div>
+    <>
       {uploadedFile ?
         <>
           <Backdrop
@@ -30,21 +33,20 @@ function PDFViewer() {
           >
             <CircularProgress color="inherit" />
           </Backdrop>
-          <Grid container spacing={1} >
-            <Grid item lg={6.2} >
-              {pages && <PDFPreview file={uploadedFile} selected={selected} handleSelection={setSelected} Pages={pages} />}
+          <Grid container spacing={2} >
+            <Grid item xs={12} md={5} order={{ xs: 1, md: 1 }}>
+              {pages && <Workspace file={uploadedFile} selected={selected} handleSelection={setSelected} Pages={pages} />}
             </Grid>
-            <Grid item lg={5.8} sx={{
-              overflowX: 'hidden',
-              overflowY: 'auto',
-              whiteSpace: 'wrap',
-              maxHeight: '96vh',
-              mt: '20px',
-              backgroundColor: 'white'
-            }}>
-              <Document file={uploadedFile} onLoadSuccess={onDocumentLoadSuccess}>
-                <Page pageNumber={selected} />
-              </Document>
+            <Grid item xs={12} md={7} order={{ xs: 1, md: 2 }}>
+              <Box sx={{
+                borderRadius: '7px',
+                backgroundColor: '#1C1C24',
+                overflow: 'hidden'
+              }}>
+                <Document file={uploadedFile} onLoadSuccess={onDocumentLoadSuccess}>
+                  <Page pageNumber={selected} width={md ? 399 : 319} />
+                </Document>
+              </Box>
             </Grid>
           </Grid>
         </> :
@@ -54,8 +56,6 @@ function PDFViewer() {
           text='choose file'
         />
       }
-    </div>
+    </>
   );
 }
-
-export default PDFViewer;

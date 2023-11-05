@@ -1,7 +1,7 @@
 
 body::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.3rem;
+  height: 0.3rem;
 }
 
 body::-webkit-scrollbar-thumb {
@@ -44,30 +44,42 @@ hr {
 .react-pdf__Page__textContent {
   /* border: 1px solid darkgrey; */
   /* box-shadow: 5px 5px 5px 1px #ccc; */
+  /* background-color: #1C1C24; */
   border-radius: 5px;
 }
-
+.react-pdf__Document {
+  background-color: #1C1C24;
+}
 .react-pdf__Page__annotations.annotationLayer {
+  /* background-color: #1C1C24; */
+
   padding: 20px;
 }
 
-.react-pdf__Page__canvas {
+.react-pdf__Page {
+  /* width: 319px; */
   margin: 0 auto;
-  /* padding: 10px; */
+}
+.react-pdf__Page__canvas {
+  background-color: rgb(132, 132, 137);
+  margin: 0 auto;
+  padding: 1px;
 }
 .pdf-preview {
-  overflow-x: auto;
-  overflow-y: hidden;
-  z-index: 100;
-  width: 100%;
-  height: 40vh;
-  border: 2px dashed rgb(90, 92, 93);
-  border-radius: 2px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* z-index: 100; */
+  /* width: 40vh; */
+  /* height: 60vh;  */
+  border: 2px  rgb(90, 92, 93);
+  border-radius: 5px;
+  /* background-color: #1C1C24; */
   
 }
 
 .pdf-preview::-webkit-scrollbar {
-  height: 0.5rem;
+  height: 0.3rem;
+  width: 0.3rem;
 }
 
 .pdf-preview::-webkit-scrollbar-thumb {
@@ -76,7 +88,7 @@ hr {
   border-radius: 0.5rem;
 }
 .pdf-bin::-webkit-scrollbar {
-  height: 0.3rem;
+  width: 0.3rem;
 }
 
 .pdf-bin::-webkit-scrollbar-thumb {
@@ -86,9 +98,10 @@ hr {
 }
 
 .pdf-bin {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 25px;
   /* box-shadow: 1px 1px 9px 1px #5e5353; */
-  border:2px solid #4a4343;
-  border-radius: 2px;
 }
 /* For all pages */
 .all-page-container {

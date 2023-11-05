@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Grid, Link, Menu, MenuItem, Popper, Stack, Toolbar, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Grid, Link, Menu, MenuItem, Stack, Toolbar, Typography, useTheme } from '@mui/material';
+import { useDispatch } from 'react-redux';
 import Info from './Info';
 import { fetchPDF } from '../utils/api';
 import pdfImage from '../assets/pdf.png'
@@ -11,11 +11,14 @@ import FileOpenIcon from '@mui/icons-material/FileOpen';
 export default function Files() {
   const [data, setData] = React.useState([])
   const [selected, setSelected] = React.useState([])
-  const auth = useSelector(store => store?.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const theme = useTheme()
+  const color = theme.palette.primary.main
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event, path) => {
     setSelected(path)
     setAnchorEl(event.currentTarget);
@@ -28,12 +31,12 @@ export default function Files() {
   }, [])
 
   const getData = async () => {
-    const res = await fetchPDF(auth._id)
+    const res = await fetchPDF()
     setData(res?.data?.data)
   }
 
   const editFile = () => {
-    dispatch({ type: 'dispatch_data', payload: selected })
+    dispatch({ type: 'dispatch_data', payload: import.meta.env.VITE_SERVER_URL+selected })
     navigate('/editor')
   }
   return (
@@ -51,20 +54,21 @@ export default function Files() {
               variant="h6"
               id="tableTitle"
               component="div"
+              color={color}
             >
               Saved Files
             </Typography>
 
           </Toolbar>
-          <Grid container>
+          <Grid container spacing={2}>
             {data.map((x) => (
               <Grid item key={x._id}>
                 <Stack alignItems={'center'} sx={{ cursor: 'pointer' }} onClick={(e) => handleClick(e, x.path)}>
-                  <img src={pdfImage} height={150} />
-                  <Typography variant='subtitle2' pt={1}>
+                  <img src={pdfImage} height={100} />
+                  <Typography color={color} variant='subtitle2' pt={1}>
                     {x.filename}
                   </Typography>
-                  <Typography variant='caption' >
+                  <Typography color={color} variant='caption' >
                     {(x.size / 1024).toFixed(2)} KB
                   </Typography>
                 </Stack>
@@ -89,9 +93,8 @@ export default function Files() {
             <MenuItem onClick={editFile} >
               <Edit fontSize='small' />
               <Typography paddingLeft={1}> Edit</Typography></MenuItem>
-            <Link href={selected} target='_blank' color="inherit" sx={{ textDecorationLine: "none" }}>
-              <MenuItem component={Link}>
-                {console.log(selected)}
+            <Link href={import.meta.env.VITE_SERVER_URL+selected} target='_blank' color="inherit" sx={{ textDecorationLine: "none" }}>
+              <MenuItem>
                 <FileOpenIcon fontSize='small' /> <Typography paddingLeft={1}>open</Typography>
               </MenuItem>
             </Link>
