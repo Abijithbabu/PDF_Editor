@@ -4,8 +4,8 @@ const fileUpload = require('express-fileupload');
 const { verifyToken } = require("../middlewares/authMiddleware");
 
 router.use(fileUpload())
-router.post("/createPdf", verifyToken, createPdf);
-router.get("/fetchPdf", verifyToken, fetchPdf);
-router.get("/fetchLastUpdated", verifyToken, fetchLastUpdated);
+router.post("/createPdf", createPdf);
+router.get("/fetchPdf", fetchPdf);
+router.get("/fetchLastUpdated", fetchLastUpdated);
 
 module.exports = router;

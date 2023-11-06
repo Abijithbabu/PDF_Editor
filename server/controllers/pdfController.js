@@ -9,7 +9,7 @@ module.exports.createPdf = async (req, res, next) => {
     const { filename, pages, file } = req?.body
     const uploadedFile = req?.files?.file;
     let existingFile
-    const filePath = `${path.dirname(__dirname)}\\public\\pdfs\\${req.id}\\${filename}`;
+    const filePath = `${path.dirname(__dirname)}\\public\\pdfs\\${filename}`;
     const dirname = path.dirname(filePath);
 
     // create a new folder for user if he doesn't have an existing
@@ -25,7 +25,7 @@ module.exports.createPdf = async (req, res, next) => {
     } else {
       const url = new URL(file);
       const name = url.pathname.split('/').pop()
-      existingFile = `${path.dirname(__dirname)}\\public\\pdfs\\${req.id}\\${name}`
+      existingFile = `${path.dirname(__dirname)}\\public\\pdfs\\${name}`
     }
 
     // Load the PDF from the temporary file
@@ -53,21 +53,21 @@ module.exports.createPdf = async (req, res, next) => {
     let existingFiles
     // save to database if document already existed else created a new collection 
     const saveFiles = async (size) => {
-      existingFiles = await Files.findOne({ author: req.id, filename })
+      existingFiles = await Files.findOne({ author: req.query.id, filename })
       if (existingFiles) {
         existingFiles.size = size
         await existingFiles.save()
       } else {
         existingFiles = await Files.create({
           filename,
-          path: `/pdfs/${req.id}/${filename}`,
-          author: req.id,
+          path: `/pdfs/${filename}`,
+          author: req.query.id,
           size
         })
       }
     }
 
-    return res.status(200).json({ status: true, message: 'done', link: `/pdfs/${req.id}/${filename}` });
+    return res.status(200).json({ status: true, message: 'done', link: `/pdfs/${filename}` });
 
   } catch (ex) {
     return res.status(400).json({ status: false, message: ex.message });
@@ -76,7 +76,7 @@ module.exports.createPdf = async (req, res, next) => {
 
 module.exports.fetchPdf = async (req, res) => {
   try {
-    const data = await Files.find({ author: req.id })
+    const data = await Files.find({ author: req.query.id })
     if (data)
       return res.status(200).json({ status: true, data });
 
@@ -87,11 +87,11 @@ module.exports.fetchPdf = async (req, res) => {
 
 module.exports.fetchLastUpdated = async (req, res) => {
   try {
-    const data = await Files.find({ author: req.id }).sort({updatedAt:-1}).limit(5)
+    const data = await Files.find({ author: req.query.id }).sort({updatedAt:-1}).limit(5)
     if (data)
       return res.status(200).json({ status: true, data });
 
   } catch (err) {
-    return res.status(400).json({ status: false, message: err.message });
+    return res.status(200).json({ status: false, message: err.message });
   }
 }

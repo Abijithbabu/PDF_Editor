@@ -3,6 +3,7 @@ import { Backdrop, CircularProgress, IconButton, Link, Stack, TextField, ThemePr
 import { CheckCircle, Cancel, Error, CreateNewFolder, FileDownload } from '@mui/icons-material';
 import { status } from '../utils/constants';
 import { EditPDF } from '../utils/api';
+import { useSelector } from 'react-redux';
 import { validateName } from '../utils/functions';
 
 const PdfExtractionComponent = ({ file, pages }) => {
@@ -12,11 +13,12 @@ const PdfExtractionComponent = ({ file, pages }) => {
   const [error, setError] = useState({status:false,message:'filename extension (.pdf) is required'})
   const [filename, setFilename] = useState('')
   const [progress, setProgress] = React.useState(0);
+  const user = useSelector(store=>store?.user)
   const extractPagesAndDownload = async () => {
     if(!error.status){
       counter()
      const order = pages.map(x => Number(x.key))
-     const res = await EditPDF({ file, filename, order })
+     const res = await EditPDF({ file, filename, order, id:user._id })
      setData(res.data)
   }
   }

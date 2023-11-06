@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Grid, Link, Menu, MenuItem, Stack, Toolbar, Typography, useTheme } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Info from './Info';
 import { fetchPDF } from '../utils/api';
 import pdfImage from '../assets/pdf.png'
@@ -11,6 +11,7 @@ import FileOpenIcon from '@mui/icons-material/FileOpen';
 export default function Files() {
   const [data, setData] = React.useState([])
   const [selected, setSelected] = React.useState([])
+  const auth = useSelector(store => store?.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const theme = useTheme()
@@ -31,7 +32,7 @@ export default function Files() {
   }, [])
 
   const getData = async () => {
-    const res = await fetchPDF()
+    const res = await fetchPDF(auth._id)
     setData(res?.data?.data)
   }
 

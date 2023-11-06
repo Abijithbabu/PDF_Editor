@@ -18,9 +18,10 @@ module.exports.login = async (req, res, next) => {
   
     return res
     .cookie("token", token, {
+      path: "/",
       expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
-      SameSite: "Lax",
+      SameSite: "lax",
       secure: true,
     })
     .status(200)
@@ -56,7 +57,7 @@ module.exports.register = async (req, res, next) => {
       path: "/",
       expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
-      SameSite: "none",
+      SameSite: "None",
       secure: true,
     }).json({ status: true, user });
   } catch (ex) {
@@ -93,9 +94,10 @@ module.exports.gLogin = async (req, res) => {
   return res
     .status(200)
     .cookie("token", token, {
+      path: "/",
       expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
-      SameSite: "none",
+      SameSite: "None",
       secure: true,
     }).json({ status: true, user:existingUser });
   } catch (error) {

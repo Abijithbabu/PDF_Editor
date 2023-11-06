@@ -15,8 +15,9 @@ export default function BasicTable() {
     getData()
   }, [])
   const getData = async () => {
-    const res = await fetchLastUpdated()
+    const res = await fetchLastUpdated(auth._id)
     setData(res?.data?.data)
+    dispatch({ type: 'dispatch_data', payload: import.meta.env.VITE_SERVER_URL+res?.data?.data?.[0]?.path })
   }
   const editFile = (file) => {
     dispatch({ type: 'dispatch_data', payload: import.meta.env.VITE_SERVER_URL+file })

@@ -19,6 +19,6 @@ export const EditPDF = async (data) => {
     return await axios.post('/pdf/createPdf', formData)
 }
 
-export const fetchPDF = async (data) => await axios.get(`/pdf/fetchPdf`)
+export const fetchPDF = async (data) => await axios.get(`/pdf/fetchPdf?id=${data}`)
 
-export const fetchLastUpdated = async (data) => await axios.get(`/pdf/fetchLastUpdated`)
+export const fetchLastUpdated = async (data) => await axios.get(`/pdf/fetchLastUpdated?id=${data}`)
