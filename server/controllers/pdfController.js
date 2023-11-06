@@ -6,7 +6,7 @@ const Users = require('../models/userModel')
 
 module.exports.createPdf = async (req, res, next) => {
   try {
-    const { filename, pages, file } = req?.body
+    const { filename, pages, file, userId } = req?.body
     const uploadedFile = req?.files?.file;
     let existingFile
     const filePath = `${path.dirname(__dirname)}\\public\\pdfs\\${filename}`;
@@ -53,7 +53,7 @@ module.exports.createPdf = async (req, res, next) => {
     let existingFiles
     // save to database if document already existed else created a new collection 
     const saveFiles = async (size) => {
-      existingFiles = await Files.findOne({ author: req.query.id, filename })
+      existingFiles = await Files.findOne({ author: userId, filename })
       if (existingFiles) {
         existingFiles.size = size
         await existingFiles.save()
@@ -61,7 +61,7 @@ module.exports.createPdf = async (req, res, next) => {
         existingFiles = await Files.create({
           filename,
           path: `/pdfs/${filename}`,
-          author: req.query.id,
+          author: userId,
           size
         })
       }
